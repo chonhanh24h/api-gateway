@@ -1,0 +1,32 @@
+import { Controller, Get, Post, Body, Param, Put, Delete, Query, Inject } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+
+@Controller('cities')
+export class CitiesController {
+  constructor(@Inject('CORE_SERVICE') private client: ClientProxy) {}
+
+  @Get()
+  findAll(@Query('parent_id') parentId?: string) {
+    return this.client.send({ cmd: 'get_all_cities' }, { parentId });
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.client.send({ cmd: 'get_city_by_id' }, id);
+  }
+
+  @Post()
+  create(@Body() data: any) {
+    return this.client.send({ cmd: 'create_city' }, data);
+  }
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() data: any) {
+    return this.client.send({ cmd: 'update_city' }, { id, updateCityDto: data });
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.client.send({ cmd: 'remove_city' }, id);
+  }
+}
