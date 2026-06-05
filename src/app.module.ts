@@ -8,6 +8,7 @@ import { CategoriesController } from './categories/categories.controller';
 import { CitiesController } from './cities/cities.controller';
 import { PostsController } from './posts/posts.controller';
 import { MessagesController } from './messages/messages.controller';
+import { UsersController } from './users/users.controller';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
@@ -63,6 +64,18 @@ import { JwtModule } from '@nestjs/jwt';
         }),
         inject: [ConfigService],
       },
+      {
+        name: 'USER_SERVICE',
+        imports: [ConfigModule],
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.TCP,
+          options: {
+            host: configService.get('USER_SERVICE_HOST'),
+            port: configService.get('USER_SERVICE_PORT'),
+          },
+        }),
+        inject: [ConfigService],
+      },
     ]),
   ],
   controllers: [
@@ -72,6 +85,7 @@ import { JwtModule } from '@nestjs/jwt';
     CitiesController,
     PostsController,
     MessagesController,
+    UsersController,
   ],
   providers: [AppService, JwtStrategy],
 })
