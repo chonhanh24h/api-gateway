@@ -28,6 +28,18 @@ export class PostsController {
     return this.client.send({ cmd: 'create_post' }, data);
   }
 
+  /**
+   * Step 2 of the S3 upload flow:
+   * Receives { fileName, fileType } from the browser and asks post-service
+   * to generate a presigned S3 PUT URL.  The browser then PUTs the file
+   * directly to S3 without hitting the backend again (Step 3).
+   */
+  @UseGuards(JwtAuthGuard)
+  @Post('upload-url')
+  getUploadUrl(@Body() body: { fileName: string; fileType: string }) {
+    return this.client.send({ cmd: 'upload_presigned_url' }, body);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   update(@Param('id') id: string, @Body() data: any) {
@@ -40,3 +52,4 @@ export class PostsController {
     return this.client.send({ cmd: 'remove_post' }, id);
   }
 }
+
