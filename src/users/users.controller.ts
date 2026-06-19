@@ -4,32 +4,26 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('account')
 export class UsersController {
-  constructor(@Inject('USER_SERVICE') private client: ClientProxy) {}
+  constructor(@Inject('USER_SERVICE') private client: ClientProxy) { }
 
   // ==================== My Ads ====================
 
   @UseGuards(JwtAuthGuard)
-  @Get('myads/analytic')
+  @Get('my-ads/analytic')
   myAdsAnalytic(@Request() req: any) {
     return this.client.send({ cmd: 'my_ads_analytic' }, { userId: req.user.userId });
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('myads/details')
+  @Get('my-ads')
   myAdsDetails(@Request() req: any, @Query() query: any) {
-    return this.client.send({ cmd: 'my_ads_details' }, { userId: req.user.userId, query });
+    return this.client.send({ cmd: 'my_ads' }, { userId: req.user.userId, query });
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('myads/updateStatus')
+  @Put('my-ads/update-status')
   myAdsUpdateStatus(@Request() req: any, @Body() body: any) {
     return this.client.send({ cmd: 'my_ads_update_status' }, { userId: req.user.userId, body });
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Put('myads/updateTime')
-  myAdsUpdateTime(@Request() req: any, @Body() body: any) {
-    return this.client.send({ cmd: 'my_ads_update_time' }, { body });
   }
 
   // ==================== My Profile ====================
@@ -43,52 +37,52 @@ export class UsersController {
   // ==================== Favorite ====================
 
   @UseGuards(JwtAuthGuard)
-  @Get('myfavorite')
+  @Get('my-favorite')
   getFavorite(@Request() req: any, @Query() query: any) {
     return this.client.send({ cmd: 'get_favorite' }, { userId: req.user.userId, query });
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('myfavorite/save')
+  @Put('my-favorite/save')
   saveFavorite(@Request() req: any, @Body() body: any) {
     return this.client.send({ cmd: 'save_favorite' }, { userId: req.user.userId, body });
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('myfavorite/unsave')
+  @Put('my-favorite/unsave')
   unSaveFavorite(@Request() req: any, @Body() body: any) {
     return this.client.send({ cmd: 'unsave_favorite' }, { userId: req.user.userId, body });
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('myfavorite/unsaveall')
+  @Put('my-favorite/unsave-all')
   unSaveAllFavorite(@Request() req: any) {
     return this.client.send({ cmd: 'unsave_all_favorite' }, { userId: req.user.userId });
   }
 
   // ==================== Search ====================
 
-  @UseGuards(JwtAuthGuard)
-  @Get('mysearch')
-  getSearch(@Request() req: any, @Query() query: any) {
-    return this.client.send({ cmd: 'get_search' }, { userId: req.user.userId, query });
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Get('my-search')
+  // getSearch(@Request() req: any, @Query() query: any) {
+  //   return this.client.send({ cmd: 'get_search' }, { userId: req.user.userId, query });
+  // }
 
-  @UseGuards(JwtAuthGuard)
-  @Put('mysearch/save')
-  saveSearch(@Request() req: any, @Body() body: any) {
-    return this.client.send({ cmd: 'save_search' }, { userId: req.user.userId, body });
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Put('my-search/save')
+  // saveSearch(@Request() req: any, @Body() body: any) {
+  //   return this.client.send({ cmd: 'save_search' }, { userId: req.user.userId, body });
+  // }
 
-  @UseGuards(JwtAuthGuard)
-  @Put('mysearch/unsave')
-  unSaveSearch(@Request() req: any, @Body() body: any) {
-    return this.client.send({ cmd: 'unsave_search' }, { userId: req.user.userId, body });
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Put('my-search/unsave')
+  // unSaveSearch(@Request() req: any, @Body() body: any) {
+  //   return this.client.send({ cmd: 'unsave_search' }, { userId: req.user.userId, body });
+  // }
 
-  @UseGuards(JwtAuthGuard)
-  @Put('mysearch/unsaveall')
-  unSaveAllSearch(@Request() req: any) {
-    return this.client.send({ cmd: 'unsave_all_search' }, { userId: req.user.userId });
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Put('my-search/unsave-all')
+  // unSaveAllSearch(@Request() req: any) {
+  //   return this.client.send({ cmd: 'unsave_all_search' }, { userId: req.user.userId });
+  // }
 }
