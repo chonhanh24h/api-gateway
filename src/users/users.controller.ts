@@ -6,26 +6,6 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class UsersController {
   constructor(@Inject('USER_SERVICE') private client: ClientProxy) { }
 
-  // ==================== My Ads ====================
-
-  @UseGuards(JwtAuthGuard)
-  @Get('my-ads/analytic')
-  myAdsAnalytic(@Request() req: any) {
-    return this.client.send({ cmd: 'my_ads_analytic' }, { userId: req.user.userId });
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('my-ads')
-  myAdsDetails(@Request() req: any, @Query() query: any) {
-    return this.client.send({ cmd: 'my_ads' }, { userId: req.user.userId, query });
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Put('my-ads/update-status')
-  myAdsUpdateStatus(@Request() req: any, @Body() body: any) {
-    return this.client.send({ cmd: 'my_ads_update_status' }, { userId: req.user.userId, body });
-  }
-
   // ==================== My Profile ====================
 
   @UseGuards(JwtAuthGuard)
