@@ -4,7 +4,7 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('messages')
 export class MessagesController {
-  constructor(@Inject('POST_SERVICE') private client: ClientProxy) {}
+  constructor(@Inject('CORE_SERVICE') private client: ClientProxy) { }
 
   @Get()
   findAll(@Query() query: any) {

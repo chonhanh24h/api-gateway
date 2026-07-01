@@ -52,7 +52,6 @@ export class PostsController {
     return this.client.send({ cmd: 'remove_post' }, id);
   }
 
-  // ==================== My Ads ====================
   @UseGuards(JwtAuthGuard)
   @Get('my-ads/analytic')
   myAdsAnalytic(@Request() req: any) {

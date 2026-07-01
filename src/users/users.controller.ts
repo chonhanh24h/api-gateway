@@ -6,15 +6,11 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 export class UsersController {
   constructor(@Inject('USER_SERVICE') private client: ClientProxy) { }
 
-  // ==================== My Profile ====================
-
   @UseGuards(JwtAuthGuard)
   @Put('profile/update')
   putMyInfo(@Request() req: any, @Body() body: any) {
     return this.client.send({ cmd: 'put_my_info' }, { userId: req.user.userId, body });
   }
-
-  // ==================== Favorite ====================
 
   @UseGuards(JwtAuthGuard)
   @Get('my-favorite')
