@@ -1,4 +1,12 @@
-import { Controller, Post, Body, Get, UseGuards, Request, Inject } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseGuards,
+  Request,
+  Inject,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
@@ -18,7 +26,10 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Request() req: any) {
-    return this.client.send({ cmd: 'get_profile' }, { userId: req.user.userId });
+  getProfile(@Request() req: { user: { userId: string } }) {
+    return this.client.send(
+      { cmd: 'get_profile' },
+      { userId: req.user.userId },
+    );
   }
 }

@@ -22,4 +22,4 @@ async function bootstrap() {
   console.log(`API Gateway is running on: http://localhost:${port}`);
   console.log(`Swagger UI is available on: http://localhost:${port}/api/docs`);
 }
-bootstrap();
+void bootstrap();
