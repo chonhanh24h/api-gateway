@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, Query, Inject } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+  Query,
+  Inject,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 @Controller('categories')
@@ -21,8 +31,11 @@ export class CategoriesController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() data: any) {
-    return this.client.send({ cmd: 'update_category' }, { id, updateCategoryDto: data });
+  update(@Param('id') id: string, @Body() data: Record<string, unknown>) {
+    return this.client.send(
+      { cmd: 'update_category' },
+      { id, updateCategoryDto: data },
+    );
   }
 
   @Delete(':id')

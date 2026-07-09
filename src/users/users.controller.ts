@@ -1,39 +1,75 @@
-import { Controller, Get, Put, Body, Query, Inject, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Put,
+  Body,
+  Query,
+  Inject,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('account')
 export class UsersController {
-  constructor(@Inject('USER_SERVICE') private client: ClientProxy) { }
+  constructor(@Inject('USER_SERVICE') private client: ClientProxy) {}
 
   @UseGuards(JwtAuthGuard)
   @Put('profile/update')
-  putMyInfo(@Request() req: any, @Body() body: any) {
-    return this.client.send({ cmd: 'put_my_info' }, { userId: req.user.userId, body });
+  putMyInfo(
+    @Request() req: { user: { userId: string } },
+    @Body() body: Record<string, unknown>,
+  ) {
+    return this.client.send(
+      { cmd: 'put_my_info' },
+      { userId: req.user.userId, body },
+    );
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('my-favorite')
-  getFavorite(@Request() req: any, @Query() query: any) {
-    return this.client.send({ cmd: 'get_favorite' }, { userId: req.user.userId, query });
+  getFavorite(
+    @Request() req: { user: { userId: string } },
+    @Query() query: Record<string, unknown>,
+  ) {
+    return this.client.send(
+      { cmd: 'get_favorite' },
+      { userId: req.user.userId, query },
+    );
   }
 
   @UseGuards(JwtAuthGuard)
   @Put('my-favorite/save')
-  saveFavorite(@Request() req: any, @Body() body: any) {
-    return this.client.send({ cmd: 'save_favorite' }, { userId: req.user.userId, body });
+  saveFavorite(
+    @Request() req: { user: { userId: string } },
+    @Body() body: Record<string, unknown>,
+  ) {
+    return this.client.send(
+      { cmd: 'save_favorite' },
+      { userId: req.user.userId, body },
+    );
   }
 
   @UseGuards(JwtAuthGuard)
   @Put('my-favorite/unsave')
-  unSaveFavorite(@Request() req: any, @Body() body: any) {
-    return this.client.send({ cmd: 'unsave_favorite' }, { userId: req.user.userId, body });
+  unSaveFavorite(
+    @Request() req: { user: { userId: string } },
+    @Body() body: Record<string, unknown>,
+  ) {
+    return this.client.send(
+      { cmd: 'unsave_favorite' },
+      { userId: req.user.userId, body },
+    );
   }
 
   @UseGuards(JwtAuthGuard)
   @Put('my-favorite/unsave-all')
-  unSaveAllFavorite(@Request() req: any) {
-    return this.client.send({ cmd: 'unsave_all_favorite' }, { userId: req.user.userId });
+  unSaveAllFavorite(@Request() req: { user: { userId: string } }) {
+    return this.client.send(
+      { cmd: 'unsave_all_favorite' },
+      { userId: req.user.userId },
+    );
   }
 
   // ==================== Search ====================

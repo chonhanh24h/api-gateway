@@ -21,7 +21,7 @@ import { JwtModule } from '@nestjs/jwt';
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
+      useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
         signOptions: { expiresIn: '7d' },
       }),
@@ -34,8 +34,8 @@ import { JwtModule } from '@nestjs/jwt';
         useFactory: (configService: ConfigService) => ({
           transport: Transport.TCP,
           options: {
-            host: configService.get('AUTH_SERVICE_HOST'),
-            port: configService.get('AUTH_SERVICE_PORT'),
+            host: configService.get<string>('AUTH_SERVICE_HOST'),
+            port: configService.get<number>('AUTH_SERVICE_PORT'),
           },
         }),
         inject: [ConfigService],
@@ -46,8 +46,8 @@ import { JwtModule } from '@nestjs/jwt';
         useFactory: (configService: ConfigService) => ({
           transport: Transport.TCP,
           options: {
-            host: configService.get('CORE_SERVICE_HOST'),
-            port: configService.get('CORE_SERVICE_PORT'),
+            host: configService.get<string>('CORE_SERVICE_HOST'),
+            port: configService.get<number>('CORE_SERVICE_PORT'),
           },
         }),
         inject: [ConfigService],
@@ -58,8 +58,8 @@ import { JwtModule } from '@nestjs/jwt';
         useFactory: (configService: ConfigService) => ({
           transport: Transport.TCP,
           options: {
-            host: configService.get('POST_SERVICE_HOST'),
-            port: configService.get('POST_SERVICE_PORT'),
+            host: configService.get<string>('POST_SERVICE_HOST'),
+            port: configService.get<number>('POST_SERVICE_PORT'),
           },
         }),
         inject: [ConfigService],
@@ -70,8 +70,8 @@ import { JwtModule } from '@nestjs/jwt';
         useFactory: (configService: ConfigService) => ({
           transport: Transport.TCP,
           options: {
-            host: configService.get('USER_SERVICE_HOST'),
-            port: configService.get('USER_SERVICE_PORT'),
+            host: configService.get<string>('USER_SERVICE_HOST'),
+            port: configService.get<number>('USER_SERVICE_PORT'),
           },
         }),
         inject: [ConfigService],
