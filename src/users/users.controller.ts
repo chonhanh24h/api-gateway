@@ -97,4 +97,13 @@ export class UsersController {
   // unSaveAllSearch(@Request() req: any) {
   //   return this.client.send({ cmd: 'unsave_all_search' }, { userId: req.user.userId });
   // }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Request() req: { user: { userId: string } }) {
+    return this.client.send(
+      { cmd: 'get_profile' },
+      { userId: req.user.userId },
+    );
+  }
 }
