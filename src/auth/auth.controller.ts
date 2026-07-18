@@ -14,4 +14,9 @@ export class AuthController {
   register(@Body() data: any) {
     return this.client.send({ cmd: 'register' }, data);
   }
+
+  @Post('register/request-otp')
+  requestOtp(@Body() data: any) {
+    return this.client.send({ cmd: 'request-register-otp' }, data);
+  }
 }
