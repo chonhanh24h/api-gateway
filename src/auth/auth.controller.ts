@@ -1,6 +1,5 @@
-import { Controller, Post, Body, Get, UseGuards, Request, Inject } from '@nestjs/common';
+import { Controller, Post, Body, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -16,9 +15,8 @@ export class AuthController {
     return this.client.send({ cmd: 'register' }, data);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  getProfile(@Request() req: any) {
-    return this.client.send({ cmd: 'get_profile' }, { userId: req.user.userId });
+  @Post('register/request-otp')
+  requestOtp(@Body() data: any) {
+    return this.client.send({ cmd: 'request-register-otp' }, data);
   }
 }
