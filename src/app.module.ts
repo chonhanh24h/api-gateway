@@ -12,6 +12,7 @@ import { UsersController } from './users/users.controller';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { JwtModule } from '@nestjs/jwt';
       }),
       inject: [ConfigService],
     }),
+    HealthModule,
     ClientsModule.registerAsync([
       {
         name: 'AUTH_SERVICE',
