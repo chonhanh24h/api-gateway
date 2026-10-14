@@ -12,10 +12,10 @@ import { ClientProxy } from '@nestjs/microservices';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('account')
+@UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(@Inject('USER_SERVICE') private client: ClientProxy) {}
 
-  @UseGuards(JwtAuthGuard)
   @Put('profile/update')
   putMyInfo(
     @Request() req: { user: { userId: string } },
@@ -27,7 +27,6 @@ export class UsersController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('my-favorite')
   getFavorite(
     @Request() req: { user: { userId: string } },
@@ -39,7 +38,6 @@ export class UsersController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
   @Put('my-favorite/save')
   saveFavorite(
     @Request() req: { user: { userId: string } },
@@ -51,7 +49,6 @@ export class UsersController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
   @Put('my-favorite/unsave')
   unSaveFavorite(
     @Request() req: { user: { userId: string } },
@@ -63,7 +60,6 @@ export class UsersController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
   @Put('my-favorite/unsave-all')
   unSaveAllFavorite(@Request() req: { user: { userId: string } }) {
     return this.client.send(
@@ -74,31 +70,26 @@ export class UsersController {
 
   // ==================== Search ====================
 
-  // @UseGuards(JwtAuthGuard)
   // @Get('my-search')
   // getSearch(@Request() req: any, @Query() query: any) {
   //   return this.client.send({ cmd: 'get_search' }, { userId: req.user.userId, query });
   // }
 
-  // @UseGuards(JwtAuthGuard)
   // @Put('my-search/save')
   // saveSearch(@Request() req: any, @Body() body: any) {
   //   return this.client.send({ cmd: 'save_search' }, { userId: req.user.userId, body });
   // }
 
-  // @UseGuards(JwtAuthGuard)
   // @Put('my-search/unsave')
   // unSaveSearch(@Request() req: any, @Body() body: any) {
   //   return this.client.send({ cmd: 'unsave_search' }, { userId: req.user.userId, body });
   // }
 
-  // @UseGuards(JwtAuthGuard)
   // @Put('my-search/unsave-all')
   // unSaveAllSearch(@Request() req: any) {
   //   return this.client.send({ cmd: 'unsave_all_search' }, { userId: req.user.userId });
   // }
 
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req: { user: { userId: string } }) {
     return this.client.send(

@@ -23,6 +23,7 @@ export class PostsController {
     return this.client.send({ cmd: 'get_all_posts' }, query);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('user/:userId')
   findByUserId(@Param('userId') userId: string) {
     return this.client.send({ cmd: 'get_posts_by_user' }, userId);
