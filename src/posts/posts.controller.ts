@@ -9,17 +9,20 @@ import {
   Query,
   Inject,
   UseGuards,
-  Request,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Public } from '../auth/decorators/public.decorator';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
 @Controller('posts')
 export class PostsController {
   constructor(@Inject('POST_SERVICE') private client: ClientProxy) {}
 
+  /** Public — no token required */
+  @Public()
   @Get()
-  findAll(@Query() query: any) {
+  findAll(@Query() query: Record<string, unknown>) {
     return this.client.send({ cmd: 'get_all_posts' }, query);
   }
 
@@ -29,6 +32,8 @@ export class PostsController {
     return this.client.send({ cmd: 'get_posts_by_user' }, userId);
   }
 
+  /** Public — no token required */
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.client.send({ cmd: 'get_post_by_id' }, id);
@@ -38,9 +43,9 @@ export class PostsController {
   @Post()
   create(
     @Body() data: Record<string, unknown>,
-    @Request() req: { user: { userId: string } },
+    @CurrentUser('userId') userId: string,
   ) {
-    const payload = { ...data, userID: req.user.userId };
+    const payload = { ...data, userID: userId };
     return this.client.send({ cmd: 'create_post' }, payload);
   }
 
@@ -73,34 +78,25 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @Get('my-ads/analytic')
-  myAdsAnalytic(@Request() req: { user: { userId: string } }) {
-    return this.client.send(
-      { cmd: 'my_ads_analytic' },
-      { userId: req.user.userId },
-    );
+  myAdsAnalytic(@CurrentUser('userId') userId: string) {
+    return this.client.send({ cmd: 'my_ads_analytic' }, { userId });
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('my-ads/list')
   myAdsDetails(
-    @Request() req: { user: { userId: string } },
+    @CurrentUser('userId') userId: string,
     @Query() query: Record<string, unknown>,
   ) {
-    return this.client.send(
-      { cmd: 'my_ads' },
-      { userId: req.user.userId, query },
-    );
+    return this.client.send({ cmd: 'my_ads' }, { userId, query });
   }
 
   @UseGuards(JwtAuthGuard)
   @Put('my-ads/update-status')
   myAdsUpdateStatus(
-    @Request() req: { user: { userId: string } },
+    @CurrentUser('userId') userId: string,
     @Body() body: Record<string, unknown>,
   ) {
-    return this.client.send(
-      { cmd: 'my_ads_update_status' },
-      { userId: req.user.userId, body },
-    );
+    return this.client.send({ cmd: 'my_ads_update_status' }, { userId, body });
   }
 }

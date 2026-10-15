@@ -10,6 +10,8 @@ import { PostsController } from './posts/posts.controller';
 import { MessagesController } from './messages/messages.controller';
 import { UsersController } from './users/users.controller';
 import { JwtStrategy } from './auth/jwt.strategy';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { RolesGuard } from './auth/guards/roles.guard';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { HealthModule } from './health/health.module';
@@ -89,6 +91,6 @@ import { HealthModule } from './health/health.module';
     MessagesController,
     UsersController,
   ],
-  providers: [AppService, JwtStrategy],
+  providers: [AppService, JwtStrategy, JwtAuthGuard, RolesGuard],
 })
 export class AppModule {}
